@@ -35,29 +35,37 @@ var catsNew = function(req, res){
 };
 
 var cats = function(req, res){
-    cats = db.getAll().sort(function(a,b){return a.age-b.age});
+    var cats = db.getAll();//.sort(function(a,b){return a.age-b.age});
     
     res.render('display', {"cats":cats});
 };
 
 var catsColor = function(req, res){
+    console.log(req.params.color);
+    var cats = db.getAll().filter( function( cat ){
+        return cat.color === req.params.color;
+    });
 
+    if( cats.length == 0 ){
+        cats = db.getAll();
+        var hash = {}
+        for( var i=0; i < cats.length; i++){
+            hash[cats[i].color] = 1;
+        }
+        
+        console.log(Object.keys(hash));
+    }
+
+    res.render('display', {"cats": cats});
 };
 
 var deleteOldCat = function(req, res){
-    all_cats = db.getAll();
-    cat = all_cats.reduce(function(prev, cur, idx, arr){
-        if( cur.age > arr[prev].age ){
-            return idx;
-        }else{
-            return prev;
-        }
-    });
+    var cats = db.getAll();//.sort(function(a,b){return a.age-b.age});
 
-    console.log(cat);
-    db.remove(cat.idx);
+    console.log(cats[cats.length-1]);
+    db.remove(cats.length);
 
-    res.render('display', {"cats":[cat]});
+    res.render('display', {"cats":[cats[cats.length-1]]});
 };
 //app.get('/cats/new', index.catsNew);
 //app.get('/cats', index.cats);

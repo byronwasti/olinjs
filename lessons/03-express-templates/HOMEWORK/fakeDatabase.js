@@ -5,6 +5,7 @@ var FakeDatabase = module.exports = {
     add: function(obj) {
         //adds item to end of array holding data
         FakeDatabase.data.push(obj);
+        FakeDatabase.data = FakeDatabase.data.sort(function(a,b){return a.age-b.age});
     },
 
     getAll: function() {
@@ -14,6 +15,6 @@ var FakeDatabase = module.exports = {
 
     remove: function(index) {
         //removes item located at index in array and returns it
-        return data.splice(index,1);
+        return FakeDatabase.data.pop();splice(index,1);
     }
 }
