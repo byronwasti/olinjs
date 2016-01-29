@@ -1,7 +1,7 @@
 var db = require('../fakeDatabase');
 
 var NAMES = ['Tom', 'Jack', 'Andrew', 'Keenan', 'Patrick', 'Alex', 'Ian', 'Franton', 'John', 'Manik'];
-var COLORS = ['yElLoW', 'YELLOW', 'green, jk, just yellow', 'yellow with a hint of lime', 'yellowish yellow', 'yellow of the sun', 'yellow', 'super yellow', 'REALLY yellow', 'fucking Yellow', 'really fucking yellow'];
+var COLORS = ['yElLoW', 'YELLOW', 'green, jk, just yellow', 'yellow with a hint of lime', 'yellowish yellow', 'yellow of the sun', 'yellow', 'super yellow', 'REALLY yellow', 'More Yellow', 'Blue yellow'];
 
 function Cat( name, age, color ){
     this.name = name;
@@ -41,20 +41,19 @@ var cats = function(req, res){
 };
 
 var catsColor = function(req, res){
-    console.log(req.params.color);
     var cats = db.getAll().filter( function( cat ){
         return cat.color === req.params.color;
     });
 
+    /*
     if( cats.length == 0 ){
         cats = db.getAll();
         var hash = {}
         for( var i=0; i < cats.length; i++){
             hash[cats[i].color] = 1;
         }
-        
-        console.log(Object.keys(hash));
     }
+    */
 
     res.render('display', {"cats": cats});
 };
