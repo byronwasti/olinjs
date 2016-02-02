@@ -1,0 +1,11 @@
+<a href="/">home</a>
+<ul>
+    {{#each cats}}
+        <li>{{this.name}}
+            <ul> 
+                <li>{{this.age}}</li>
+                <li>{{this.color}}</li>
+            </ul>
+        </li>
+    {{/each}}
+</ul>
