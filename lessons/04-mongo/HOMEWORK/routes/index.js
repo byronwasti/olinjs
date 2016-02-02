@@ -13,7 +13,8 @@ var home = function(req, res){
         {link:"/cats/new"},
         {link:"/cats"},
         {link:"/cats/bycolor"},
-        {link:"/cats/delete/old"}
+        {link:"/cats/delete/old"},
+        {link:"/cats/oldPatrick"}
     ]});
     //res.send("Welcome home!");
 };
@@ -63,8 +64,15 @@ var deleteOldCat = function(req, res){
     //res.render('display', {"cats":});
 };
 
+var oldPatrick = function(req, res){
+    Cat.find({ age: {$gt: 6}, name:'Patrick'}, function(err, cats){
+        res.render('display', {"cats": cats});
+    });
+}
+
 module.exports.home = home;
 module.exports.catsNew = catsNew;
 module.exports.cats = cats;
 module.exports.catsColor = catsColor;
 module.exports.deleteOldCat = deleteOldCat;
+module.exports.oldPatrick = oldPatrick;

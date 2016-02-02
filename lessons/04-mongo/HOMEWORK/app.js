@@ -22,5 +22,6 @@ app.get('/cats/new', index.catsNew);
 app.get('/cats', index.cats);
 app.get('/cats/bycolor/:color', index.catsColor);
 app.get('/cats/delete/old', index.deleteOldCat);
+app.get('/cats/oldPatrick', index.oldPatrick);
 
 app.listen(3000);
