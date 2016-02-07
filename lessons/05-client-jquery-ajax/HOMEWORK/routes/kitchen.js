@@ -6,16 +6,30 @@ var routes = {};
 
 
 routes.home = function(req, res){
-    Order.find({})
+    Order.find({completion: false}) // Don't care about completed ones right now
         .populate('ingredients.ingredient')
         .exec(function(err, orders){
+            priced = orders.map(function(order){
+                if( order.ingredients.length == 1 ){
+                    var price = order.ingredients[0].amount * order.ingredients[0].ingredient.price;
+                } else{
+                    var price = order.ingredients.reduce(function(prev, cur, idx, arr){
+                        return prev.ingredient.price*prev.amount + cur.ingredient.price*cur.amount;
+                    });
+                }
+
+                order.price = "" + price.toFixed(2); // Force 2 decimal places
+                return order;
+            });
+
             if(err) console.error(err);
-            res.render('kitchen', {"orders":orders});
+
+            res.render('kitchen', {"orders":priced});
     });
 };
 
 routes.remove = function(req, res){
-    console.log(req.body._id);
+
     Ingredient.find({_id:req.body._id}, function(err, out){
         console.log(out);
     });
@@ -26,8 +40,9 @@ routes.remove = function(req, res){
 };
 
 routes.complete = function(req, res){
+    
     Order.findOneAndUpdate({_id: req.body._id}, {completion: true})
-        .exec(function(err, ingredient){
+        .exec(function(err, order){
             res.send('Removed');
         });
 };

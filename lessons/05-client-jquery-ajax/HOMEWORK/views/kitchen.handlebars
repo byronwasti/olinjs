@@ -5,16 +5,22 @@
 <ul id='main_list'>
     {{#each orders}}
     <li id={{this._id}} class='ingredient'>
-      <input type='button' onclick='deleteOrder("{{this._id}}")' value='x'/> 
-      {{this}} 
-      <input type='checkbox' onclick='completeOrder("{{this._id}}")'/>
+      <input type='button' onclick='deleteOrder("{{this._id}}")' value='Delete'/> 
+      <h3 style='display:inline;'>Order ID: {{this._id}}</h3>
+
+      <ul> 
+        {{#each this.ingredients}}
+        
+        <li> {{this.amount}} x {{this.ingredient.name}} </li>
+        
+        {{/each}}
+
+      </ul>
+      <span class='price'>Total Price: ${{this.price}}</span>
+      <br/>
+      <input type='button' onclick='completeOrder("{{this._id}}")' value='Complete'/>
     </li>
     {{/each}}
 </ul>
-
-Price: $<span id='price'>0.00</span> <input type="submit" id='submitter' value='Order' method='POST'\>
-</form>
-
-<h1 id='status'></h1>
 
 <script type='text/javascript' src='javascripts/kitchen.js'></script>

@@ -16,8 +16,6 @@ routes.home = function(req, res){
 
 
 routes.add = function(req, res){
-    console.log(req.body);
-    console.log(Object.keys(req.body));
     var ingredients = [];
     var keys = Object.keys(req.body);
     for( var i=0; i < keys.length; i++){
@@ -25,16 +23,22 @@ routes.add = function(req, res){
             continue;
         }
         ingredients.push({ amount: req.body[keys[i]], ingredient: mongoose.Types.ObjectId(keys[i])});
-        //ingredients.push({ amount: req.body[keys[i]], ingredient: Number(keys[i])});
     }
+
 
     if( ingredients.length == 0 ){
         return res.send('{}');
     }
 
     var order = new Order({ ingredients: ingredients, completion: false});
+    console.log(mongoose.Types.ObjectId(keys[0]));
+    console.log(order._id);
+
     order.save(function(err, model){
-        if(err) return res.send('{}');
+        if(err){
+            console.error(err);
+            return res.send('{}');
+        } 
 
         return res.send('sucess!');
     });
