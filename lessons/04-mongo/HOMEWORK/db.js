@@ -7,6 +7,7 @@ connection.once('open', function() {
 
 });
 
+// If you are trying to write functions that let you use the database like it was syncronous, you should look in to promises and mongoose
 var add = function(model){
     model.save(function(err, model){
         if (err) return console.error(err);
@@ -20,6 +21,7 @@ var getAll = function(model){
     });
 }
 
+//Why is this here?
 var remove_old = function(index){
     //Cat.find({});
 
