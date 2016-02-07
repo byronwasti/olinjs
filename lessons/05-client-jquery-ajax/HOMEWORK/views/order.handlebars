@@ -1,0 +1,18 @@
+<h1> Order </h1>
+
+<form id='add_order' method='POST'>
+
+<ul id='main_list'>
+    {{#each ingredients}}
+<li id={{this._id}} class='ingredient'>
+    {{this.name}}: ${{this.price}} <select onchange="updatePrice()" class='item' name='{{this.amount}}' title='{{this.price}}'><option value='0'>0</option></select>
+</li>
+    {{/each}}
+</ul>
+
+Price: $<span id='price'>0.00</span> <input type="submit" id='submitter' value='Order' method='POST'\>
+</form>
+
+<h1 id='status'></h1>
+
+<script type='text/javascript' src='javascripts/order.js'></script>

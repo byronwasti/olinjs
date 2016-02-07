@@ -1,0 +1,20 @@
+<h1> Kitchen </h1>
+
+<form id='add_order' method='POST'>
+
+<ul id='main_list'>
+    {{#each orders}}
+    <li id={{this._id}} class='ingredient'>
+      <input type='button' onclick='deleteOrder("{{this._id}}")' value='x'/> 
+      {{this}} 
+      <input type='checkbox' onclick='completeOrder("{{this._id}}")'/>
+    </li>
+    {{/each}}
+</ul>
+
+Price: $<span id='price'>0.00</span> <input type="submit" id='submitter' value='Order' method='POST'\>
+</form>
+
+<h1 id='status'></h1>
+
+<script type='text/javascript' src='javascripts/kitchen.js'></script>

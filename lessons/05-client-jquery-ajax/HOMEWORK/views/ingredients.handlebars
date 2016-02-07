@@ -1,0 +1,21 @@
+<h1> Ingredients </h1>
+
+<ul id='main_list'>
+    {{#each ingredients}}
+<li id={{this._id}}>
+    <input type='button' value='Remove' onclick='removeIngredient("{{this._id}}");'\>
+         <span class='amount'>(x{{this.amount}})</span> {{this.name}}: ${{this.price}} 
+    <input type='button' onclick='decreaseIngredient("{{this._id}}");' value='-'\>
+    <input type='button' onclick='increaseIngredient("{{this._id}}");' value='+'\></li>
+    {{/each}}
+</ul>
+
+<!--<form id='add_ingredient' action='ingredients' method='POST'> -->
+<form id='add_ingredient' method='POST'>
+    Ingredient: <input type='text' name='name'><br>
+    Amount: <input type='number' step='1' min='0' name='amount'><br>
+    Price: <input type='number' step='0.01' min='0' name='price'><br>
+    <input type="submit" id='button_add' value='Add Ingredient'\>
+</form>
+
+<script type='text/javascript' src='javascripts/ingredients.js'></script>
