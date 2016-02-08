@@ -63,6 +63,9 @@ routes.edit = function(req, res){
             });
             break;
         case 'price':
+            if( req.body.price == null ){
+                break;
+            }
             Ingredient.findOneAndUpdate({_id: req.body.id}, {price: req.body.price},{}, function(err, ingredients){
                 if( err ) return res.send('{}');
                 return res.send('');
@@ -71,6 +74,7 @@ routes.edit = function(req, res){
         default:
             return res.send('{}');
     }
+    return res.send('{}');
 };
 
 module.exports = routes;
