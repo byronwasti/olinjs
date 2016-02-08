@@ -25,18 +25,13 @@ routes.add = function(req, res){
         ingredients.push({ amount: req.body[keys[i]], ingredient: mongoose.Types.ObjectId(keys[i])});
     }
 
-
     if( ingredients.length == 0 ){
         return res.send('{}');
     }
 
     var order = new Order({ ingredients: ingredients, completion: false});
-    //console.log(mongoose.Types.ObjectId(keys[0]));
-    //console.log(order._id);
 
     order.save(function(err, model){
-        //console.log(model);
-
         model.ingredients.map(function(ingredient){
             Ingredient.findOneAndUpdate({_id: ingredient.ingredient}, {$inc: {amount: -ingredient.amount}}, {}, function(err, ingred){
                 if(err){
@@ -52,10 +47,6 @@ routes.add = function(req, res){
 
         return res.send('sucess!');
     });
-};
-
-routes.complete = function(req, res){
-
 };
 
 module.exports = routes;

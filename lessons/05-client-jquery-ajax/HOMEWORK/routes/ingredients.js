@@ -13,39 +13,35 @@ routes.list = function(req, res){
 };
 
 routes.add = function(req, res){
-    console.log("Got request to add an ingredient");
-    
-    console.log(req.body);
+    // Ternary operator is a life-saver
     var ingdt = new Ingredient({name: req.body.name,
              amount: req.body.amount?req.body.amount:0,
              price: req.body.price?req.body.price:0});
 
-    ingdt.save(function(err, model){
+    ingdt.save(function(err, ingdt){
         if(err) return console.error(err);
+        res.send(ingdt);
     });
 
-    res.send(ingdt);
 };
 
 routes.remove = function(req, res){
-    console.log("Time to remove things!");
-    console.log(req.body);
-
-    Ingredient.find({_id: req.body.id}, function(err, ingredient){
+    Ingredient.remove({_id: req.body.id}, function(err, ingredient){
         if( err ) return res.send('{}');
         if( ingredient.length == 0 ){
             return res.send('{}');
         }
-        ingredient[0].remove();
         res.send(ingredient[0]);
     });
 };
 
+// There has to be a more compact way of doing this...
 routes.edit = function(req, res){
-    console.log(req.body);
+    var error = false;
     switch(req.body.type){
         case 'name':
             if( req.body.name == '' ){
+                error = true;
                 break;
             }
             Ingredient.findOneAndUpdate({_id: req.body.id}, {name: req.body.name},{}, function(err, ingredients){
@@ -54,7 +50,8 @@ routes.edit = function(req, res){
             });
             break;
         case 'amount':
-            if( req.body.amount < 0 ){
+            if( req.body.amount < 0 || req.body.amount === ''){
+                error = true;
                 break;
             }
             Ingredient.findOneAndUpdate({_id: req.body.id}, {amount: req.body.amount},{}, function(err, ingredients){
@@ -63,7 +60,8 @@ routes.edit = function(req, res){
             });
             break;
         case 'price':
-            if( req.body.price == null ){
+            if( req.body.price === null || req.body.price === '' ){
+                error = true;
                 break;
             }
             Ingredient.findOneAndUpdate({_id: req.body.id}, {price: req.body.price},{}, function(err, ingredients){
@@ -74,7 +72,9 @@ routes.edit = function(req, res){
         default:
             return res.send('{}');
     }
-    return res.send('{}');
+    if( error ){
+        return res.send('{}');
+    }
 };
 
 module.exports = routes;

@@ -32,11 +32,7 @@ app.get('/kitchen', kitchen.home);
 app.post('/add_ingredient', ingredients.add);
 app.post('/remove_ingredient', ingredients.remove);
 app.post('/edit_ingredient', ingredients.edit);
-
 app.post('/add_order', order.add);
-
-// Currently only support deleting the order because it
-// makes keeping track of ingredients a lot easier
 app.post('/remove_order', kitchen.remove);
 //app.post('/complete_order', kitchen.complete); // Uncomment to have completion of orders
 app.post('/complete_order', kitchen.remove);
