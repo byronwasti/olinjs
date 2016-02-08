@@ -4,9 +4,9 @@
 
 <ul id='main_list'>
     {{#each ingredients}}
-<li id={{this._id}} class='ingredient'>
-    {{this.name}}: ${{this.price}} <select onchange="updatePrice()" class='item' name='{{this.amount}}' title='{{this.price}}'><option value='0'>0</option></select>
-</li>
+  <li id={{this._id}} name='{{this.amount}}' title='{{this.price}}' class='ingredient'>
+    {{this.name}}: ${{this.price}} 
+  </li>
     {{/each}}
 </ul>
 
@@ -15,4 +15,10 @@ Price: $<span id='price'>0.00</span> <input type="submit" id='submitter' value='
 
 <h1 id='status'></h1>
 
+<script type='text/javascript'>
+INGREDIENTS = {}
+{{#each ingredients}}
+INGREDIENTS['{{this._id}}'] = {name:'{{this.name}}', price:'{{this.price}}', amount:'{{this.amount}}' };
+{{/each}}
+</script>
 <script type='text/javascript' src='javascripts/order.js'></script>

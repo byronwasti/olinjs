@@ -31,10 +31,20 @@ routes.add = function(req, res){
     }
 
     var order = new Order({ ingredients: ingredients, completion: false});
-    console.log(mongoose.Types.ObjectId(keys[0]));
-    console.log(order._id);
+    //console.log(mongoose.Types.ObjectId(keys[0]));
+    //console.log(order._id);
 
     order.save(function(err, model){
+        //console.log(model);
+
+        model.ingredients.map(function(ingredient){
+            Ingredient.findOneAndUpdate({_id: ingredient.ingredient}, {$inc: {amount: -ingredient.amount}}, {}, function(err, ingred){
+                if(err){
+                    console.error(err);
+                }
+            });
+        });
+
         if(err){
             console.error(err);
             return res.send('{}');

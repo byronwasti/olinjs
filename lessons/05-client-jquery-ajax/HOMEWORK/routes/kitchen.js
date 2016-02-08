@@ -6,15 +6,32 @@ var routes = {};
 
 
 routes.home = function(req, res){
+    //Order.remove({});
     Order.find({completion: false}) // Don't care about completed ones right now
         .populate('ingredients.ingredient')
         .exec(function(err, orders){
             priced = orders.map(function(order){
                 if( order.ingredients.length == 1 ){
-                    var price = order.ingredients[0].amount * order.ingredients[0].ingredient.price;
+                    if( order.ingredients[0] == null){
+                        price = 0;
+                    } else{
+                        var price = order.ingredients[0].amount * order.ingredients[0].ingredient.price;
+                    }
                 } else{
+                    var nulled = order.ingredients.filter(function(ingredient){
+                        return ingredient.ingredient == null;
+                    });
+                    
+                    if( nulled ){
+                        return order;
+                    }
+
                     var price = order.ingredients.reduce(function(prev, cur, idx, arr){
-                        return prev.ingredient.price*prev.amount + cur.ingredient.price*cur.amount;
+                        if( prev.ingredient == null || cur.ingredient == null){
+                            return 0;
+                        } else {
+                            return prev.ingredient.price*prev.amount + cur.ingredient.price*cur.amount;
+                        }
                     });
                 }
 
