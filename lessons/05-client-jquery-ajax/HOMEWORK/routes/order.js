@@ -6,7 +6,7 @@ var Order = require('../models/orderModel');
 var routes = {};
 
 routes.home = function(req, res){
-    Ingredient.find({}, function(err, ingredients){
+    Ingredient.find({amount: {$gt: 0} }, function(err, ingredients){
         ingredients.sort(function(a, b){
             return a.price - b.price;
         });

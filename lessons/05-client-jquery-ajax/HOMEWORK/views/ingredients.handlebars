@@ -2,11 +2,12 @@
 
 <ul id='main_list'>
     {{#each ingredients}}
-<li id={{this._id}}>
-    <input type='button' value='Remove' onclick='removeIngredient("{{this._id}}");'\>
-         <span class='amount'>(x{{this.amount}})</span> {{this.name}}: ${{this.price}} 
-    <input type='button' onclick='decreaseIngredient("{{this._id}}");' value='-'\>
-    <input type='button' onclick='increaseIngredient("{{this._id}}");' value='+'\></li>
+<li id={{this._id}} class='ingredient'>
+  <input type='button' value='Remove' onclick='removeIngredient("{{this._id}}")'\>
+  (x<span class='amount'>{{this.amount}}</span>)
+  <span class='name'>{{this.name}}</span>:
+  $<span class='price'>{{this.price}}</span>
+  {{#if this.amount}}{{else}}<h1 style='display:inline;color:red;'> OUT OF STOCK </h1> {{/if}}
     {{/each}}
 </ul>
 
@@ -18,4 +19,4 @@
     <input type="submit" id='button_add' value='Add Ingredient'\>
 </form>
 
-<script type='text/javascript' src='javascripts/ingredients.js'></script>
+<script type='text/javascript' src='javascripts/ingredients_testing.js'></script>

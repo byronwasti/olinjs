@@ -15,9 +15,10 @@ routes.list = function(req, res){
 routes.add = function(req, res){
     console.log("Got request to add an ingredient");
     
+    console.log(req.body);
     var ingdt = new Ingredient({name: req.body.name,
-             amount: req.body.amount,
-             price: req.body.price});
+             amount: req.body.amount?req.body.amount:0,
+             price: req.body.price?req.body.price:0});
 
     ingdt.save(function(err, model){
         if(err) return console.error(err);
@@ -39,15 +40,37 @@ routes.remove = function(req, res){
         res.send(ingredient[0]);
     });
 };
-routes.plus = function(req, res){
-    Ingredient.findOneAndUpdate({_id: req.body.id}, {$inc: {amount: 1}},{}, function(err, ingredients){
-        res.send(ingredients);
-    });
-};
-routes.minus = function(req, res){
-    Ingredient.findOneAndUpdate({_id: req.body.id}, {$inc: {amount: -1}},{}, function(err, ingredients){
-        res.send(ingredients);
-    });
+
+routes.edit = function(req, res){
+    console.log(req.body);
+    switch(req.body.type){
+        case 'name':
+            if( req.body.name == '' ){
+                break;
+            }
+            Ingredient.findOneAndUpdate({_id: req.body.id}, {name: req.body.name},{}, function(err, ingredients){
+                if( err ) return res.send('{}');
+                return res.send('');
+            });
+            break;
+        case 'amount':
+            if( req.body.amount < 0 ){
+                break;
+            }
+            Ingredient.findOneAndUpdate({_id: req.body.id}, {amount: req.body.amount},{}, function(err, ingredients){
+                if( err ) return res.send('{}');
+                return res.send('');
+            });
+            break;
+        case 'price':
+            Ingredient.findOneAndUpdate({_id: req.body.id}, {price: req.body.price},{}, function(err, ingredients){
+                if( err ) return res.send('{}');
+                return res.send('');
+            });
+            break;
+        default:
+            return res.send('{}');
+    }
 };
 
 module.exports = routes;

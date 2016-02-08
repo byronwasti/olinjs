@@ -22,7 +22,8 @@ routes.home = function(req, res){
                         return ingredient.ingredient == null;
                     });
                     
-                    if( nulled ){
+                    if( !nulled ){
+                        console.log(nulled);
                         return order;
                     }
 
