@@ -1,0 +1,46 @@
+<link rel="stylesheet" href="stylesheets/style.css" />
+
+<div id='navbar'>
+  <h1> {{name}} </h1>
+</div>
+
+<div id='example' class='example'>
+  <li id='exampleUser' >Example User</li>
+  <li id='examplePost' > Example Text </li>
+  <p id='examplePostUsername' class='postUsername'> example user </p>
+</div>
+
+{{#if user}}
+<div id='login'>
+  <p> {{user}} <a href='/logout'>Logout</a></p>
+</div>
+{{else}}
+<div id='login'>
+  <a href='/auth/facebook'>Login</a>
+</div>
+{{/if}}
+
+
+<ul id='container'>
+  <ul id='users'>
+
+    {{#each users}}
+    <li id='{{this._id}}' class='byUser'>{{this.name}}</li>
+    {{/each}}
+  </ul>
+
+  <ul id='posts'>
+    {{#each posts}}
+    <li id='{{this._id}}'>{{this.text}}</li>
+    <p class='postUsername'>- {{this.author.name}} </p>
+    {{/each}}
+  </ul>
+</ul>
+
+
+<form id='submitBox'>
+  <textarea class='text'></textarea>
+  <input type='submit' id='submitButton' value='{{name}}'\>
+</form>
+
+<script type='text/javascript' src='javascripts/index.js'></script>

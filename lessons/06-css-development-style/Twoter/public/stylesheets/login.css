@@ -1,0 +1,25 @@
+html {
+  height: 100%; }
+
+body {
+  display: flex;
+  height: 90%; }
+
+#login_container {
+  margin: auto; }
+  #login_container a {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 100;
+    font-size: 100px;
+    height: 2em;
+    width: 6em;
+    text-align: center;
+    text-decoration: none;
+    color: black;
+    -webkit-transition: opacity 100ms linear, text-shadow 50ms linear;
+    -moz-transition: opacity 100ms linear, text-shadow 50ms linear;
+    -ms-transition: opacity 100ms linear, text-shadow 50ms linear;
+    -o-transition: opacity 100ms linear, text-shadow 50ms linear; }
+  #login_container a:hover {
+    text-shadow: 0px 0px 10px #000000;
+    color: grey; }
