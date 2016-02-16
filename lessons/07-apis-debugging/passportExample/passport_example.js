@@ -4,7 +4,6 @@ var passport = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
 var session = require('express-session');
 
-
 var auth = require('./auth');
 
 passport.use(new FacebookStrategy({

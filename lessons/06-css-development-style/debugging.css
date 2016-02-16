@@ -6,6 +6,8 @@ html {
 body {
 	font: 100% georgia, sans-serif;
 	color: #555753; 
+    padding-left: 10%;
+    padding-right: 10%;
 }
 
 p { 
@@ -20,6 +22,11 @@ h1 {
 	color: #7D775C;
 }
 
+.about p,h1,h2{
+    line-height:2em;
+}
+
+
 h2 {
 	font: italic normal 1.6em georgia, sans-serif;
 	letter-spacing: 1px; 
@@ -32,6 +39,12 @@ h3 {
 	letter-spacing: 1px; 
 	margin-bottom: 0; 
 	color: #7D775C;
+}
+
+li {
+    list-style-type: square;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 a {
@@ -51,6 +64,7 @@ a:hover, a:focus, a:active {
 
 .summary {
 	width: 300px;
+    margin-right: 80px;
 	padding: 20px 20px 20px 20px; 
 	float: left;
 }
