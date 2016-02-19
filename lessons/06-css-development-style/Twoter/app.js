@@ -26,7 +26,7 @@ passport.use(new FacebookStrategy({
     //Here you should search the connected DB if the user exists and load that in, or add it to db.
     console.log("FB Strat" + profile);
     User.findOne({FB_ID: profile.id}, function(err, user){
-        if( user == null ){
+        if( user === null ){
             new_user = new User({ FB_ID: profile.id, name: profile.displayName });
             new_user.save();
             return done(null, new_user);
@@ -86,3 +86,5 @@ function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) { return next(); }
     res.send(401);
 }
+
+module.exports = app;

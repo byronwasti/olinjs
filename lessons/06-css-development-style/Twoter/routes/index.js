@@ -43,7 +43,7 @@ module.exports = function(){
 
                     console.log(req.user);
 
-					if( req.user != undefined ){
+					if( req.user !== undefined ){
 						return res.render('home', {users: users, posts: twotes, name: '7w073r', user: req.user.name});
 					}
 					else {
@@ -59,7 +59,7 @@ module.exports = function(){
         },
 
         post: function(req, res){
-            if( req.body.text == '' ){
+            if( req.body.text === '' ){
                 console.error("Invalid request");
                 return res.send('{}');
             }
@@ -97,6 +97,6 @@ module.exports = function(){
                     res.send(posts);
                 });
         }
-    }
-}
+    };
+};
 
