@@ -1,0 +1,147 @@
+var CompleteBox = React.createClass({
+    loadTasksFromServer: function(){
+        $.get( this.props.url ).
+            done(function(data, status){
+                this.setState({data: data});
+            }.bind(this)).
+            error(function(data, status){
+                console.error(data);
+            });
+    },
+    getInitialState: function(){
+        return {data: []};
+    },
+    componentDidMount: function(){
+        this.loadTasksFromServer();
+        setInterval(this.loadTasksFromServer, this.props.pollInterval);
+    },
+    handleNewTask: function(task){
+
+        // Optomistic update
+        task.id = Date.now();
+        var optomistic_tasks = [task].concat(this.state.data);
+        this.setState({data: optomistic_tasks});
+
+        $.post('/api/tasks', task).
+            done(function(data, status){
+                //this.setState({data:data});
+                console.log('successful save!');
+            }.bind(this)).
+            error(function(data, status){
+                console.error(data);
+            });
+    },
+    handleCompletion: function(task){
+        //TODO; 
+        console.log(task);
+        task.id = Date.now();
+        console.log(task);
+    },
+    render: function(){
+        return (
+                <div className='Outer'>
+                    <TaskForm newTask={this.handleNewTask}/>
+                    <Selection />
+                    <TaskList 
+                        data={this.state.data} 
+                        handleComplete={this.handleCompletion}
+                    />
+                </div>
+               );
+    }
+});
+
+var TaskList = React.createClass({
+  render: function() {
+        //console.log(this.props);
+        var taskNodes = this.props.data.map(function(task){
+        return (
+                <Tasks
+                     task={task.text} 
+                     complete={task.completed}
+                     key={task._id} 
+                     handleComplete={this.props.handleComplete}
+                 />
+               );
+    }.bind(this));
+    return (
+        <div className='TaskBox'>
+            {taskNodes}
+        </div>
+    );
+  }
+});
+
+var TaskForm = React.createClass({
+    getInitialState: function(){
+        return {text:''};
+    },
+    handleTextChange: function(e){
+        this.setState({text: e.target.value});
+    },
+    handleKey: function(e){
+        if( e.charCode == 13 || e.keyCode == 13){
+            e.preventDefault();
+            var text = this.state.text;
+            if( !text ){
+                return;
+            }
+
+            this.props.newTask({text: text});
+            this.setState({text: ''});
+        }
+    },
+    render: function(){
+        return (
+                <div className='TaskForm'>
+                    <input id='checkEnter' 
+                        type='text' 
+                        placeholder='I need to do...'
+                        value = {this.state.text}
+                        onChange = {this.handleTextChange} 
+                        onKeyPress = {this.handleKey}
+                    />
+                </div>
+               );
+    }
+});
+
+var Tasks = React.createClass({
+    getInitialState:function(){
+        return {checked: this.props.complete};
+    },
+    handleChange: function(e){
+        this.setState({checked: e.target.checked});
+        console.log(this.state);
+        //console.log(e.target.checked);
+        this.props.handleComplete(this.props.key);
+    },
+    render: function(){
+        return (
+                <div className='task'>
+                    <h2><input type='checkbox' defaultChecked={this.props.checked} onChange={this.handleChange}/>{this.props.task}</h2>
+                </div>
+               );
+    }
+});
+
+var Selection = React.createClass({
+    getInitialState: function(){
+        return { select: 'todo' };
+    },
+    render: function(){
+        return (
+                <div className='selection'>
+                    <input type='button' value='All'/>
+                    <input type='button' value='Todo'/>
+                    <input type='button' value='Completed'/>
+                </div>
+               );
+    }
+});
+
+ReactDOM.render(
+  <CompleteBox url="/api/tasks" pollInterval={10000}/>,
+  document.getElementById('content')
+);
+
