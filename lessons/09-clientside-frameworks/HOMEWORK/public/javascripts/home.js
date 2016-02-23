@@ -1,7 +1,7 @@
 
 var TodoList = React.createClass({
     getInitialState: function(){
-        return {tasks: []};
+        return {tasks: [], sort:'all'};
     },
     loadTasksFromServer: function(){
         $.get( this.props.url ).
@@ -62,12 +62,36 @@ var TodoList = React.createClass({
             });
     },
     filterList: function(type){
-        // Take no chances!
-        this.loadTasksFromServer();
-        console.log(type);
+        this.setState({type: type});
+    },
+    handleHoverToEdit: function(task){
+        console.log(task);
+        this.setState({tasks: this.state.tasks.map(function(task_){
+            if( task_._id == task._id ){
+                task_.text = task.text;
+            }
+            return task_;
+        })});
 
-        this.setState({tasks: this.state.tasks.map(function(task){
-            switch(type){
+        $.post('/api/editTasks', {_id:task._id, text:task.text})
+            .done(function(data,status){
+                this.loadTasksFromServer();
+            }.bind(this))
+            .error(function(data, status){
+                console.error(data);
+            });
+    },
+    render: function(){
+        return (
+<div className='todoList'>
+    <Title />
+    <Input submitTask={this.handleSubmit}/>
+    <br/>
+    <FilterButton type='all' action={this.filterList}/>
+    <FilterButton type='todo' action={this.filterList}/>
+    <FilterButton type='completed' action={this.filterList}/>
+    <List tasks={this.state.tasks.filter(function(task){
+            switch(this.state.type){
                 case 'all':
                     return task;
                     break;
@@ -82,21 +106,16 @@ var TodoList = React.createClass({
                 default:
                     return task;
             }
-        })});
-    },
-    render: function(){
-        return (
-<div className='todoList'>
-    <Title />
-    <Input submitTask={this.handleSubmit}/>
-    <Filter filterList={this.filterList}/>
-    <List tasks={this.state.tasks}
+
+    }.bind(this))}
         removeTask={this.handleRemove}
         completeTask={this.handleComplete}
+        handleHoverToEdit={this.handleHoverToEdit}
         />
 </div> 
                );
     }
+    //<Filter filterList={this.filterList}/>
 });
 
 var Title = React.createClass({
@@ -124,7 +143,6 @@ var Input = React.createClass({
         
             this.props.submitTask({text: text});
             this.setState({text: ''});
-
         }
     },
     render: function(){
@@ -141,29 +159,15 @@ var Input = React.createClass({
     }
 });
 
-var Filter = React.createClass({
-    filterList: function(type){
-        console.log(type.target);
-        if(String(type.target).search('todo')){
-            return this.props.filterList('todo');
-        }
-        if(String(type.target).search('all')){
-            return this.props.filterList('all');
-        }
-        if(String(type.target).search('completed')){
-            return this.props.filterList('completed');
-        }
+var FilterButton = React.createClass({
+    onClick: function(){
+        console.log(this.props.type);
+        this.props.action(this.props.type);
     },
     render: function(){
         return (
-<div className='filterList'>
-
-<p onClick={this.filterList} value={'all'}>All</p>
-<p onClick={this.filterList} value={'todo'}>Todo</p>
-<p onClick={this.filterList} value={'completed'}>Completed</p>
-
-</div>
-               );
+        <input type='button' onClick={this.onClick} value={this.props.type}/>
+        );
     }
 });
 
@@ -178,6 +182,8 @@ var List = React.createClass({
       completeTask={this.props.completeTask}
       _id={elem._id}
       isComplete={elem.completed}
+      edit={elem.edit}
+      handleHoverToEdit={this.props.handleHoverToEdit}
       /> 
     );}.bind(this))}
 </div>
@@ -186,9 +192,6 @@ var List = React.createClass({
 });
 
 var Task = React.createClass({
-    handleFocus: function(){
-        //console.log(this.props.text);
-    },
     handleRemove: function(){
         this.props.removeTask(this.props._id);
     },
@@ -199,10 +202,60 @@ var Task = React.createClass({
         return (
 <div className='taskElement' onClick={this.handleFocus}>
     <Complete completeTask={this.completeTask} checked={this.props.isComplete}/> 
-    {this.props.text} 
+    <TaskText text={this.props.text} 
+             _id={this.props._id} 
+             edit={this.props.edit}
+             handleHoverToEdit={this.props.handleHoverToEdit}
+    />
     <Remove removeTask={this.handleRemove}/>
 </div>
                );
+    }
+});
+
+var TaskText = React.createClass({
+    getInitialState: function(){
+        return {edit: false, text: this.props.text};
+    },
+    onChange: function(text){
+        this.setState({text: text.target.value});
+    },
+    handleFocus: function(){
+        this.setState({edit:true});
+    },
+    sendUpdate: function(){
+        this.props.handleHoverToEdit({_id: this.props._id, text: this.state.text});
+        this.setState({text: '', edit: false});
+    },
+    handleKey: function(key){
+        if( key.charCode == 13 || key.keyCode == 13 ){
+            key.preventDefault();
+            var text = this.state.text;
+            if( !text ){
+                return;
+            }
+
+            this.sendUpdate();
+        }
+    },
+    handleBlur: function(){
+        this.sendUpdate();
+    },
+    render: function(){
+        if( this.state.edit ){
+            return (
+                    <input type='text' 
+                        placeholder={this.props.text} 
+                        value={this.state.text}
+                        onChange={this.onChange}
+                        onKeyPress={this.handleKey}
+                        onBlur={this.handleBlur}
+                    />
+            );
+        }
+        return (
+                <p onClick={this.handleFocus}> {this.props.text} </p>
+        );
     }
 });
 

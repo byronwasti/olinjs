@@ -43,6 +43,16 @@ module.exports = function(){
                     console.log("complete");
                 });
             return res.json({});
+        },
+        editTasks: function(req, res){
+            if( req.body.text == '' ){
+                return res.json({err: 'invalid textbody'});
+            }
+            Task.findOneAndUpdate({_id: req.body._id}, {text:req.body.text})
+                .exec(function(err, res){
+                    if(err) console.error(err);
+                });
+            return res.json({});
         }
     }
 }

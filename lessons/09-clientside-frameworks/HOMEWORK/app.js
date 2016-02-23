@@ -33,5 +33,6 @@ app.get('/api/tasks', index.getTasks);
 app.post('/api/tasks', index.postTasks);
 app.post('/api/removeTasks', index.removeTasks);
 app.post('/api/completeTasks', index.completeTasks);
+app.post('/api/editTasks', index.editTasks);
 
 app.listen(3000);
