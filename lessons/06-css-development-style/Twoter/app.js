@@ -15,7 +15,7 @@ var passport = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
 var LocalStrategy = require('passport-local').Strategy;
 var auth = require('./auth');
-
+//Love that you left my comments in your app
 passport.use(new FacebookStrategy({
     clientID: auth.FACEBOOK_APP_ID,
     clientSecret: auth.FACEBOOK_APP_SECRET,

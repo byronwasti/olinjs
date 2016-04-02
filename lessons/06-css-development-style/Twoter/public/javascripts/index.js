@@ -50,7 +50,7 @@ $submit.submit(function(event){
     });
     
 });
-
+//Interesting choice to make a request to highlight by user. 
 $(".byUser").click(function(event){
     console.log("clicked: "+ this.id);
     $.get('byUser', {
