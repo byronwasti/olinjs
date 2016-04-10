@@ -34,3 +34,5 @@ pids
 
 # Don't want to accidentally add this
 auth.js
+
+*.swp

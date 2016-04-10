@@ -1,0 +1,17 @@
+body {
+    background: white;
+    text-align: center;
+    font-family: helvetica;
+    font-size: 100px;
+}
+
+#Centered {
+    position:absolute;
+    /*margin-top: 50%;*/
+    top:50%;
+    left: 50%;
+
+    -ms-transform:      translate(-50%,-50%); /* IE 9 */
+    -webkit-transform:  translate(-50%,-50%); /* Safari */
+    transform:          translate(-50%,-50%);
+}
