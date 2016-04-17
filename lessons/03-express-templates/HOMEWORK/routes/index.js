@@ -1,8 +1,11 @@
 var db = require('../fakeDatabase');
 
 var NAMES = ['Tom', 'Jack', 'Andrew', 'Keenan', 'Patrick', 'Alex', 'Ian', 'Franton', 'John', 'Manik'];
+
+//Christ
 var COLORS = ['yElLoW', 'YELLOW', 'green, jk, just yellow', 'yellow with a hint of lime', 'yellowish yellow', 'yellow of the sun', 'yellow', 'super yellow', 'REALLY yellow', 'More Yellow', 'Blue yellow'];
 
+// so OOP
 function Cat( name, age, color ){
     this.name = name;
     this.age = age;
@@ -36,11 +39,13 @@ var catsNew = function(req, res){
 
 var cats = function(req, res){
     var cats = db.getAll();//.sort(function(a,b){return a.age-b.age});
+    // Floating whitespace?! Byro I expect better :P
     
     res.render('display', {"cats":cats});
 };
 
 var catsColor = function(req, res){
+    //Nice use of filter
     var cats = db.getAll().filter( function( cat ){
         return cat.color === req.params.color;
     });
@@ -71,6 +76,7 @@ var deleteOldCat = function(req, res){
 //app.get('/cats/bycolor/:color', index.catsColor);
 //app.get('/cats/delete/old', index.deleteOldCat);
 
+// I like to export a function which returns and object where the keys are the callback names and the values are the anon functions. It's a bit cleaner, I can show ya in class if that doesn't make sense
 module.exports.home = home;
 module.exports.catsNew = catsNew;
 module.exports.cats = cats;

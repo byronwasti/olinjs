@@ -1,6 +1,7 @@
 var db = require('../db')
 var Cat = require('../models/catModel');
 
+// What am I, chopped liver?
 var NAMES = ['Tom', 'Jack', 'Andrew', 'Keenan', 'Patrick', 'Alex', 'Ian', 'Franton', 'John', 'Manik'];
 var COLORS = ['yElLoW', 'YELLOW', 'green, jk, just yellow', 'yellow with a hint of lime', 'yellowish yellow', 'yellow of the sun', 'yellow', 'super yellow', 'REALLY yellow', 'More Yellow', 'Blue yellow'];
 
@@ -24,7 +25,7 @@ var catsNew = function(req, res){
                color: COLORS[getRandomInt(0, COLORS.length)],
                age: getRandomInt(0, 23)
     });
-
+    
     db.add(cat);
 
     res.render('display', {"cats": [
@@ -36,6 +37,7 @@ var cats = function(req, res){
     //var cats = db.getAll(Cat);//.sort(function(a,b){return a.age-b.age});
     console.log(cats);
 
+    //noice
     Cat.find({})
        .sort({age: 1})
        .exec( function(err, cats){
