@@ -38,6 +38,24 @@ routes.remove = function(req, res){
 // There has to be a more compact way of doing this...
 routes.edit = function(req, res){
     var error = false;
+
+    /*
+        It looks like you're only sending the data which has changed -- ie only name if
+        name has changed, and only price if price has changed.
+
+        You could send all the data you need to fill the model -- that way req.body will be {id: __, name: __, price: __, amount: __}
+
+        Then you can:
+
+        Ingredient.findOneAndUpdate({_id: req.body.id}, req.body, {}, function (err, ingredients) {
+            ...
+        });
+
+        ...which eliminates the need to switch on type (and the need to send type in the request body at all).
+
+        I like that you're checking for invalid input, but I think that's better done on the clientside --
+        you don't need to communicate with the server to perform any of those checks.
+     */
     switch(req.body.type){
         case 'name':
             if( req.body.name == '' ){
